@@ -330,6 +330,7 @@ void rtlSetup() {
 
 #else
     memcpy(&cfg->devices[0], &lacrosse_tx141x, sizeof(r_device));
+    memcpy(&cfg->devices[1], &texa_fan_remote, sizeof(r_device));
 #endif
 
 #ifdef RTL_FLEX
