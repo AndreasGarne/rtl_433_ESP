@@ -3,7 +3,7 @@
 // Define the types of devices this file supports (uses expected bitlen)
 #define DATA_SIZE 13
 
-static int texa_fan_remote_decode(r_device *decoder, bitbuffer_t *bitbuffer)
+static int nexa_doorbell_decode(r_device *decoder, bitbuffer_t *bitbuffer)
 {
     data_t *data;
     int r;
@@ -22,31 +22,31 @@ static int texa_fan_remote_decode(r_device *decoder, bitbuffer_t *bitbuffer)
 
     // bitbuffer_invert(bitbuffer);
 
-    if (r < 0) {
-        return DECODE_ABORT_LENGTH;
-    }
+    // if (r < 0) {
+    //     return DECODE_ABORT_LENGTH;
+    // }
 
-    decoder_logf(decoder, -2, __func__, "bits per row: %i", bitbuffer->bits_per_row[r]);
+    // decoder_logf(decoder, -2, __func__, "bits per row: %i", bitbuffer->bits_per_row[r]);
 
-    if (bitbuffer->bits_per_row[r] != DATA_SIZE) {
-        return DECODE_ABORT_EARLY;
-    }
+    // if (bitbuffer->bits_per_row[r] != DATA_SIZE) {
+    //     return DECODE_ABORT_EARLY;
+    // }
 
     decoder_log(decoder, -2, __func__, "get actual data");
 
-    b = bitbuffer->bb[r];
+    // b = bitbuffer->bb[r];
 
     /* clang-format off */
     data = data_make(
             "button",            "",                 DATA_STRING, "OFF",
-            "data",          "",                 DATA_STRING, b,
-            "dataLength",    "",                 DATA_INT,    strlen(b),
+            // "data",          "",                 DATA_STRING, b,
+            // "dataLength",    "",                 DATA_INT,    strlen(b),
             // "data",               "Data",        DATA_STRING, sprintf("%i %i %i %i %i %i %i %i %i %i %i %i %i", b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7], b[8], b[9], b[10], b[11], b[12]),
             "num_rows", "", DATA_INT, bitbuffer->num_rows,
             "repeated_rows", "", DATA_INT, r,
-            "free_row", "", DATA_INT, bitbuffer->free_row,
-            "bits_per_row", "", DATA_INT, bitbuffer->bits_per_row[r],
-            "syncs_before_row", "", DATA_INT, bitbuffer->syncs_before_row[r],
+            // "free_row", "", DATA_INT, bitbuffer->free_row,
+            // "bits_per_row", "", DATA_INT, bitbuffer->bits_per_row[r],
+            // "syncs_before_row", "", DATA_INT, bitbuffer->syncs_before_row[r],
             NULL);
     /* clang-format on */
     decoder_output_data(decoder, data);
@@ -64,26 +64,26 @@ typedef struct bitbuffer {
 
 static char const *output_fields[] = {
         "button",
-        "data",
-        "dataLength",
+        // "data",
+        // "dataLength",
         "num_rows",
         "repeated_rows",
-        "free_row",
-        "bits_per_row",
-        "syncs_before_row",
+        // "free_row",
+        // "bits_per_row",
+        // "syncs_before_row",
         NULL,
 };
 
 // note TX141W, TX145wsdth: m=OOK_PWM, s=256, l=500, r=1888, y=748
-r_device texa_fan_remote = {
-        .name        = "TEXA Ceiling Fan Remote",
-        .modulation  = OOK_PULSE_PWM,
-        .short_width = 332,  // short pulse is 208 us + 417 us gap
-        .long_width  = 664,  // long pulse is 417 us + 208 us gap
+r_device nexa_doorbell = {
+        .name        = "NEXA door bell",
+        .modulation  = OOK_PULSE_PPM,
+        .short_width = 192,  // short pulse is 208 us + 417 us gap
+        .long_width  = 256,  // long pulse is 417 us + 208 us gap
         .sync_width  = 0,  // sync pulse is 833 us + 833 us gap
 //        .tolerance   = 200,
-        .gap_limit   = 769,  // long gap (with short pulse) is ~417 us, sync gap is ~833 us
-        .reset_limit = 12098, // maximum gap is 1250 us (long gap + longer sync gap on last repeat)
-        .decode_fn   = &texa_fan_remote_decode,
+        .gap_limit   = 260,  // long gap (with short pulse) is ~417 us, sync gap is ~833 us
+        .reset_limit = 10688, // maximum gap is 1250 us (long gap + longer sync gap on last repeat)
+        .decode_fn   = &nexa_doorbell_decode,
         .fields      = output_fields,
 };

@@ -256,7 +256,7 @@
  */
 #  define DEVICES         \
     DECL(lacrosse_tx141x) \
-    DECL(nexa)            \
+    DECL(nexa_doorbell)            \
     DECL(texa_fan_remote) \
 /* Add new personal decoders here. */
 #  define NUMOF_OOK_DEVICES 3
