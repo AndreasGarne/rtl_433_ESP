@@ -14,9 +14,9 @@ static int nexa_doorbell_decode(r_device *decoder, bitbuffer_t *bitbuffer)
 
     decoder_log(decoder, -2, __func__, "get repeated row");
 
-    r = bitbuffer_find_repeated_row(bitbuffer, bitbuffer->num_rows > 5 ? 5 : 3, 12); // 32
+//     r = bitbuffer_find_repeated_row(bitbuffer, bitbuffer->num_rows > 5 ? 5 : 3, 12); // 32
 
-    decoder_logf(decoder, -2, __func__, "rows: %i", r);
+//     decoder_logf(decoder, -2, __func__, "rows: %i", r);
 
     // decoder_log(decoder, -2, __func__, "invert buffer");
 
@@ -33,11 +33,23 @@ static int nexa_doorbell_decode(r_device *decoder, bitbuffer_t *bitbuffer)
     // }
 
     decoder_log(decoder, -2, __func__, "get actual data");
+    decoder_logf(decoder, -2, __func__, "syncs before first row: %i", bitbuffer->syncs_before_row[0]);
+    decoder_logf(decoder, -2, __func__, "num rows: %i", bitbuffer->num_rows);
+        return DECODE_ABORT_EARLY;
+//     int i;
+//     for (i = 0; i < bitbuffer->num_rows; i++)
+//     {
+//         decoder_logf(decoder, -2, __func__, "row: %i", i);
+//         decoder_logf(decoder, -2, __func__, "row size", bitbuffer->bits_per_row[i]);
+//         decoder_logf(decoder, -2, __func__, "row: %i, num bits: %i", i, bitbuffer->bits_per_row[i]);
 
+//         decoder_log(decoder, -2, __func__,sprintf("row: %i, data length: %i", i, bitbuffer->bits_per_row[i]));
+//     }
     // b = bitbuffer->bb[r];
 
     /* clang-format off */
     data = data_make(
+            "id", "", DATA_STRING, "NEXA_DOORBELL",
             "button",            "",                 DATA_STRING, "OFF",
             // "data",          "",                 DATA_STRING, b,
             // "dataLength",    "",                 DATA_INT,    strlen(b),
@@ -63,6 +75,7 @@ typedef struct bitbuffer {
 */
 
 static char const *output_fields[] = {
+        "id",
         "button",
         // "data",
         // "dataLength",
