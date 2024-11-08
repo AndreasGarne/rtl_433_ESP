@@ -32,6 +32,7 @@ static int texa_fan_remote_decode(r_device *decoder, bitbuffer_t *bitbuffer)
         return DECODE_ABORT_EARLY;
     }
 
+        return DECODE_ABORT_EARLY;
     decoder_log(decoder, -2, __func__, "get actual data");
 
     b = bitbuffer->bb[r];
