@@ -90,9 +90,9 @@ static char const *output_fields[] = {
 // note TX141W, TX145wsdth: m=OOK_PWM, s=256, l=500, r=1888, y=748
 r_device nexa_doorbell = {
         .name        = "NEXA door bell",
-        .modulation  = OOK_PULSE_PPM,
-        .short_width = 192,  // short pulse is 208 us + 417 us gap
-        .long_width  = 256,  // long pulse is 417 us + 208 us gap
+        .modulation  = OOK_PULSE_PWM,
+        .short_width = 256,  // short pulse is 208 us + 417 us gap
+        .long_width  = 320,  // long pulse is 417 us + 208 us gap
         .sync_width  = 0,  // sync pulse is 833 us + 833 us gap
 //        .tolerance   = 200,
         .gap_limit   = 260,  // long gap (with short pulse) is ~417 us, sync gap is ~833 us
