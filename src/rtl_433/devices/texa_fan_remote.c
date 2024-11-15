@@ -31,7 +31,7 @@ static int texa_fan_remote_decode(r_device *decoder, bitbuffer_t *bitbuffer)
     if (bitbuffer->bits_per_row[r] != DATA_SIZE) {
         return DECODE_ABORT_EARLY;
     }
-
+    decoder_log_bitrow(decoder, -2, __func__, bitbuffer->bb[r], 13, "bitrow debug print");
         return DECODE_ABORT_EARLY;
     decoder_log(decoder, -2, __func__, "get actual data");
 

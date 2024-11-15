@@ -28,6 +28,10 @@ static int nexa_doorbell_decode(r_device *decoder, bitbuffer_t *bitbuffer)
     //     return DECODE_ABORT_EARLY;
     // }
 
+    if (bitbuffer->bits_per_row[0] < 50)
+    {
+        return DECODE_ABORT_LENGTH;
+    }
     int i;
     for (i = 0; i < bitbuffer->num_rows; i++)
     {
