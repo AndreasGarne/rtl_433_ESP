@@ -95,9 +95,7 @@ if (rtl_433_ESP::ookModulation) {
   // end of fragment
 
 #else
-    memcpy(&cfg->devices[0], &lacrosse_tx141x, sizeof(r_device));
-    memcpy(&cfg->devices[1], &nexa, sizeof(r_device));
-    memcpy(&cfg->devices[2], &texa_fan_remote, sizeof(r_device));
+    memcpy(&cfg->devices[0], &nexa, sizeof(r_device));
 #endif
 
 #ifdef RTL_FLEX
