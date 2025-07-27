@@ -4,17 +4,17 @@ export OOK_MODULATION="OOK_PULSE_PWM|OOK_PULSE_PPM|OOK_PULSE_MANCHESTER_ZEROBIT|
 
 export FSK_MODULATION="FSK_PULSE_MANCHESTER_ZEROBIT|FSK_PULSE_PCM|FSK_PULSE_PWM"
 
-rm copy.list devices.list decoder.fragment
+rm devices.list decoder.fragment
 
-( cd .. ; rm -rf rtl_433 ; git clone https://github.com/merbanan/rtl_433 )
-( cd ../rtl_433/src/devices/ ; egrep "\.name|\.modulation|\.decode_fn|^r_device " *.c ) |\
-    awk -f device.awk | awk -F : '{ print $1 }' | sort | uniq > copy.list
+( cd .. ; rm -rf rtl_433_ESP ; git clone --branch development git@github-andreas:AndreasGarne/rtl_433_ESP )
+#( cd ../rtl_433/src/devices/ ; egrep "\.name|\.modulation|\.decode_fn|^r_device " *.c ) |\
+#    awk -f device.awk | awk -F : '{ print $1 }' | sort | uniq > copy.list
 
 echo "Clone from rtl_433 complete"
 
 # add flex decoder to the list
 
-echo "flex.c" >> copy.list
+# echo "flex.c" >> copy.list
 
 # Populate src/rtl_433/device
 
@@ -22,17 +22,17 @@ echo "flex.c" >> copy.list
 
 for i in `cat copy.list`
 do
-    cp ../rtl_433/src/devices/$i ../src/rtl_433/devices
+    cp ../rtl_433_ESP/src/rtl_433/devices/$i ../src/rtl_433/devices
 done
 
 echo "Device decoders updated"
 
-for i in `ls ../contrib/`
-do
-    cp ../contrib/$i ../src/rtl_433/devices
-done
+# for i in `ls ../contrib/`
+# do
+#    cp ../contrib/$i ../src/rtl_433/devices
+# done
 
-echo "Contrib decoders updated"
+# echo "Contrib decoders updated"
 
 # remove non-functional device decoders
 
@@ -100,15 +100,15 @@ echo "Copying src files"
 echo
 for i in `cat src_copy_list`
 do
-    echo "Copying rtl_433/src "$i" to src/rtl_433"
-    cp ../rtl_433/src/$i ../src/rtl_433
+    echo "Copying rtl_433_ESP/src/rtl_433 "$i" to src/rtl_433"
+    cp ../rtl_433_ESP/src/rtl_433/$i ../src/rtl_433
 done
 echo
 echo "These src files need copying and updating"
 echo
 for i in `cat src_copy_and_edit_list`
 do
-    echo "cp ../rtl_433/src/"$i" ../src/rtl_433"
+    echo "cp ../rtl_433_ESP/src/rtl_433/"$i" ../src/rtl_433"
 done
 
 # copy include files from rtl_433/include to include
@@ -118,13 +118,17 @@ echo "Copying include files"
 echo
 for i in `cat include_copy_list`
 do
-    echo "Copying rtl_433/include "$i" to include"
-    cp ../rtl_433/include/$i ../include
+    echo "Copying rtl_433_ESP/include "$i" to include"
+    cp ../rtl_433_ESP/include/$i ../include
 done
 echo
 echo "These include files need copying and updating"
 echo
 for i in `cat include_copy_and_edit_list`
 do
-    echo "cp ../rtl_433/include/"$i" ../include"
+    echo "cp ../rtl_433_ESP/include/"$i" ../include"
 done
+
+echo
+echo "Script complete. Press Enter to exit."
+read
